@@ -1,0 +1,23 @@
+CategoryId,CategoryName,ParentId
+1,Literary,2
+2,Literature & Fiction,null
+3,Genre Fiction,2
+4,Historical,3
+5,History,6
+6,Ships,7
+7,Transportation,8
+8,Engineering & Transportation,null
+9,History,null
+10,Americas,9
+11,United States,10
+12,State & Local,11
+13,Military,3
+14,Horror,3
+15,Politics & Social Sciences,null
+16,Politics & Government,15
+17,Specific Topics,16
+18,Colonialism & Post-Colonialism,17
+19,Family Life,3
+20,Science Fiction & Fantasy,null
+21,Science Fiction,20
+22,Adventure,21

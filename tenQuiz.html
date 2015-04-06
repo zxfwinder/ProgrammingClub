@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="libs/semantic.css"/>
+    <style>
+
+        pre {
+            margin: 0;
+        }
+
+        nav {
+            position: fixed;
+            right: 0;
+            margin: 1em;
+            padding: 1em;
+            border: 2px solid lightgoldenrodyellow;
+            border-radius: 1em;
+            background-color: rgba(255, 255, 255, .7);
+            box-shadow: 0 0 0 1px rgba(39, 41, 43, 0.15), 0 1px 4px 0 rgba(0, 0, 0, 0.15);
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            transition: all .5s ease;
+        }
+
+        nav ul li:hover {
+            color: #b4d95c;
+            transform: translate(.5em);
+        }
+
+        section {
+            border-bottom: 2px dotted #d2d2b1;
+        }
+
+        dt {
+            display: inline-block;
+            margin-left: .5em;
+            padding: .2em .4em;
+            border-radius: .3em;
+            color: white;
+            background-color: #5bbd72;
+        }
+
+        .book {
+            background-color: #ffe7db;
+        }
+
+        .author {
+            background-color: #d9ffcb;
+        }
+
+        .category {
+            background-color: #c6d2ff;
+        }
+
+        .cartesian {
+            background-color: #f9e62a;
+        }
+
+        .delete {
+            text-decoration: line-through;
+            opacity: .3;
+        }
+    </style>
+</head>
+<body class="ui page grid">
+<div class="column">
+    <nav>
+        <ul>
+            <li><a href="#first">1.实现parse()完成csv字符串的解析</a></li>
+            <li><a href="#second">2.实现from()完成笛卡尔积运算</a></li>
+            <li><a href="#third">3.实现where()完成谓词运算</a></li>
+            <li><a href="#fourth">4.实现select()完成投影运算</a></li>
+            <li class="delete"><a href="#fifth">5.改进select()完成广义投影运算</a></li>
+            <li><a href="#sixth">6.实现order()完成排序操作</a></li>
+            <li><a href="#seventh">7.实现sum()完成聚合运算</a></li>
+            <li><a href="#eighth">8.掷骰子</a></li>
+            <li><a href="#ninth">9.求转置矩阵</a></li>
+            <li><a href="#tenth">10.括号匹配</a></li>
+        </ul>
+    </nav>
+    <section>
+        <h2 id="first">1.实现parse()完成csv字符串的解析</h2>
+        <dl>
+            <dt>描述</dt>
+            <dd>将csv字符串解析为矩阵(类似二维数组对象)</dd>
+        </dl>
+        <dl>
+            <dt>输入</dt>
+            <dd>以字符","为列分隔符, "\r\n"为行分隔符的csv字符串序列,其中第一行为列头.请根据第二行内容确定每例数值的类型(只须区分字符和数字两种类型便可).</dd>
+        </dl>
+        <dl>
+            <dt>输出</dt>
+            <dd>不包含列头的内容矩阵(类二维数组对象)</dd>
+        </dl>
+        <dl>
+            <dt>样例输入</dt>
+            <dd>
+            <pre>
+<code class="book">
+    Rank,Title,ISBN,Price,PublishDate,Reviews,AuthorId,CategoryId
+    1,Everything I Never Told You,159420571X,15.22,2014/6/26,1403,1,1
+    2,All the Light We Cannot See,1476746583,12.20,2014/5/6,10255,2,3
+</code>
+            </pre>
+
+                <em>请使用<a href="data/Book.csv">Book.csv</a>,<a href="data/Author.csv">Author.csv</a>,<a href="data/Category.csv">Category.csv</a>为输入样例,可用文本编辑器打开.</em>
+            </dd>
+        </dl>
+        <dl>
+            <dt>样例输出</dt>
+            <dd>
+            <pre>
+<code class="book">
+    [
+    [1,"Everything I Never Told You","159420571X",15.22,"2014/6/26",1403,1,1],
+    [2,"All the Light We Cannot See","1476746583",12.20,"2014/5/6",10255,2,3]
+    ]
+</code>
+            </pre>
+            </dd>
+        </dl>
+    </section>
+    <section>
+        <h2 id="second">2.实现from()完成笛卡尔积运算</h2>
+        <dl>
+            <dt>描述</dt>
+            <dd>将多个矩阵按笛卡尔积运算后得到一个新矩阵</dd>
+        </dl>
+        <dl>
+            <dt>输入</dt>
+            <dd>任意个数矩阵</dd>
+        </dl>
+        <dl>
+            <dt>输出</dt>
+            <dd>笛卡尔积乘法所得的新矩阵</dd>
+        </dl>
+        <dl>
+            <dt>样例输入</dt>
+            <dd>
+                <ul>
+                    <li>book
+                    <pre>
+<code class="book">
+    [
+    [1,"Everything I Never Told You","159420571X",15.22,"2014/6/26",1403,1,1],
+    [2,"All the Light We Cannot See","1476746583",12.20,"2014/5/6",10255,2,3]
+    ]
+</code>
+                    </pre>
+                    </li>
+                    <li>author
+                    <pre>
+<code class="author">
+    [
+    [1,"Celeste Ng","F"],
+    [2, "Anthony Doerr","M"]
+    ]
+</code>
+                    </pre>
+                    </li>
+                    <li>category
+                    <pre>
+<code class="category">
+    [
+    [1,"Literary",2],
+    [2,"Literature & Fiction",null]
+    ]
+</code>
+                    </pre>
+                    </li>
+                </ul>
+            </dd>
+        </dl>
+        <dl>
+            <dt>样例输出</dt>
+            <dd>
+            <pre>
+<code class="cartesian">
+    [
+    [<span class="book">1,"Everything I Never Told You","159420571X",15.22,"2014/6/26",1403,1,1</span>, <span class="author">1,"Celeste Ng","F"</span>, <span class="category">1,"Literary",2</span> ],
+    [<span class="book">2,"All the Light We Cannot See","1476746583",12.20,"2014/5/6",10255,2,3</span>, <span class="author">1,"Celeste Ng","F"</span>, <span class="category">1,"Literary",2</span> ],
+    [<span class="book">1,"Everything I Never Told You","159420571X",15.22,"2014/6/26",1403,1,1</span>, <span class="author">2,"Anthony Doerr","M"</span>,<span class="category">1,"Literary",2</span> ],
+    [<span class="book">2,"All the Light We Cannot See","1476746583",12.20,"2014/5/6",10255,2,3</span>, <span class="author">2,"Anthony Doerr","M"</span>,<span class="category">1,"Literary",2</span> ],
+    [<span class="book">1,"Everything I Never Told You","159420571X",15.22,"2014/6/26",1403,1,1</span>, <span class="author">1,"Celeste Ng","F"</span>,<span class="category">2,"Literature & Fiction",null</span> ],
+    [<span class="book">2,"All the Light We Cannot See","1476746583",12.20,"2014/5/6",10255,2,3</span>, <span class="author">1,"Celeste Ng","F"</span>,<span class="category">2,"Literature & Fiction",null</span> ],
+    [<span class="book">1,"Everything I Never Told You","159420571X",15.22,"2014/6/26",1403,1,1</span>, <span class="author">2,"Anthony Doerr","M"</span>,<span class="category">2,"Literature & Fiction",null</span> ],
+    [<span class="book">2,"All the Light We Cannot See","1476746583",12.20,"2014/5/6",10255,2,3</span>, <span class="author">2,"Anthony Doerr","M"</span>,<span class="category">2,"Literature & Fiction",null</span> ]
+    ]
+</code>
+            </pre>
+            </dd>
+        </dl>
+    </section>
+    <section>
+        <h2 id="third">3.实现where()完成谓词运算</h2>
+        <dl>
+            <dt>描述</dt>
+            <dd>根据指定的运算谓词得到符合条件的行集</dd>
+        </dl>
+        <dl>
+            <dt>输入</dt>
+            <dd>
+                <code class="ui blue label">[columnName,operator,value],...</code>
+                每个谓词表达式数组:
+                columnName为列名;
+                operator限定为 = > < 三种运算符;
+                value为常量值或非columnName的列名
+            </dd>
+        </dl>
+        <dl>
+            <dt>输出</dt>
+            <dd>
+                符合所有指定谓词运算的行集
+            </dd>
+        </dl>
+        <dl>
+            <dt>测试输入</dt>
+            <dd>["Book.AuthorId","=","Author.AuthorId"], ["Book.CategoryId","=","Category.CategoryId"], ["Book.Rank","<",4]</dd>
+        </dl>
+        <dl>
+            <dt>测试输出</dt>
+            <dd>
+            <pre>
+<code class="cartesian">
+    [
+    [<span class="book">1,"Everything I Never Told You","159420571X",15.22,"2014/6/26",1403,1,1</span>, <span class="author">1,"Celeste Ng","F"</span>, <span class="category">1,"Literary",2</span> ],
+    [<span class="book">2,"All the Light We Cannot See","1476746583",12.20,"2014/5/6",10255,2,3</span>, <span class="author">2,"Anthony Doerr","M"</span>, <span class="category">3,"Genre Fiction",2</span> ],
+    [<span class="book">3,"In the Kingdom of Ice","385535376",18.67,"2014/8/5",1094,3,5</span>, <span class="author">3,"Hampton Sides","M"</span>,<span class="category">5,"History",6</span> ]
+    ]
+</code>
+            </pre>
+            </dd>
+        </dl>
+    </section>
+    <section>
+        <h2 id="fourth">4.实现select()完成投影运算</h2>
+        <dl>
+            <dt>描述</dt>
+            <dd>根据指定的列名限定矩阵的输出列</dd>
+        </dl>
+        <dl>
+            <dt>输入</dt>
+            <dd>
+                <code class="ui blue label">columnName,...</code>
+                columnName为要输出的列名
+            </dd>
+        </dl>
+        <dl>
+            <dt>输出</dt>
+            <dd>列名为columnName指定的矩阵</dd>
+        </dl>
+        <dl>
+            <dt>测试输入</dt>
+            <dd>"Book.Title","Book.Price","Author.AuthorName","Category.CategoryName"</dd>
+        </dl>
+        <dl>
+            <dt>测试输出</dt>
+            <dd>
+               <pre>
+<code class="cartesian">
+    [
+    [<span class="book">"Everything I Never Told You",15.22</span>, <span class="author">"Celeste Ng"</span>, <span class="category">"Literary"</span> ],
+    [<span class="book">"All the Light We Cannot See",12.20</span>, <span class="author">"Anthony Doerr"</span>, <span class="category">"Genre Fiction"</span> ],
+    [<span class="book">"In the Kingdom of Ice",18.67</span>, <span class="author">"Hampton Sides"</span>,<span class="category">"History"</span> ]
+    ]
+</code>
+            </pre>
+            </dd>
+        </dl>
+    </section>
+    <section class="delete">
+        <h2 id="fifth">5.改进select()完成广义投影运算</h2>
+        <dl>
+            <dt>描述</dt>
+            <dd></dd>
+        </dl>
+        <dl>
+            <dt>输入</dt>
+            <dd></dd>
+        </dl>
+        <dl>
+            <dt>输出</dt>
+            <dd></dd>
+        </dl>
+        <dl>
+            <dt>测试输入</dt>
+            <dd></dd>
+        </dl>
+        <dl>
+            <dt>测试输出</dt>
+            <dd></dd>
+        </dl>
+    </section>
+    <section>
+        <h2 id="sixth">6.实现order()完成排序操作</h2>
+        <dl>
+            <dt>描述</dt>
+            <dd>根据指定的排序列和排序方式对矩阵中的行进行排序</dd>
+        </dl>
+        <dl>
+            <dt>输入</dt>
+            <dd>
+                <code class="ui blue label">[columnName,orderType]...</code>
+                columnName为要排序的列名,orderType为排序方式(限定为常量"ascend","descend")
+            </dd>
+        </dl>
+        <dl>
+            <dt>输出</dt>
+            <dd>排完序的行矩阵</dd>
+        </dl>
+        <dl>
+            <dt>测试输入</dt>
+            <dd>["Book.Price","descend"]</dd>
+        </dl>
+        <dl>
+            <dt>测试输出</dt>
+            <dd>
+            <pre>
+<code class="cartesian">
+    [
+    [<span class="book">"In the Kingdom of Ice",18.67</span>, <span class="author">"Hampton Sides"</span>,<span class="category">"History"</span> ]
+    [<span class="book">"Everything I Never Told You",15.22</span>, <span class="author">"Celeste Ng"</span>, <span class="category">"Literary"</span> ],
+    [<span class="book">"All the Light We Cannot See",12.20</span>, <span class="author">"Anthony Doerr"</span>, <span class="category">"Genre Fiction"</span> ],
+    ]
+</code>
+            </pre>
+            </dd>
+        </dl>
+    </section>
+    <section>
+        <h2 id="seventh">7.实现sum()完成聚合运算</h2>
+        <dl>
+            <dt>描述</dt>
+            <dd>对指定列进行sum聚合运算,若列为字符类型则进行字符串串联操作</dd>
+        </dl>
+        <dl>
+            <dt>输入</dt>
+            <dd>
+                <code class="ui blue label">columnName,...</code>
+                columnName为要进行聚合运算的列名
+            </dd>
+        </dl>
+        <dl>
+            <dt>输出</dt>
+            <dd>指定列的聚合结果数组</dd>
+        </dl>
+        <dl>
+            <dt>测试输入</dt>
+            <dd>"Book.Price","Author.AuthorName"</dd>
+        </dl>
+        <dl>
+            <dt>测试输出</dt>
+            <dd>[46.09,"Celeste NgAnthony DoerrHampton Sides"]</dd>
+        </dl>
+    </section>
+    <section>
+        <h2 id="eighth">8.掷骰子</h2>
+        <dl>
+            <dt>描述</dt>
+            <dd>A有m个骰子，B有n个骰子。他们分别掷出自己的骰子，如果A的点数和大，则A胜；否则B胜。求A胜利的概率。</dd>
+        </dl>
+        <dl>
+            <dt>输入</dt>
+            <dd>有T组数据。每组数据一行，m和n，用空格隔开。1 <= m, n <= 10</dd>
+        </dl>
+        <dl>
+            <dt>输出</dt>
+            <dd>对于每一组数据，输出A获胜的概率。每组输出占一行，用四舍五入法，精确到小数点后面6位</dd>
+        </dl>
+        <dl>
+            <dt>测试输入</dt>
+            <dd>1<br>
+                1 1
+            </dd>
+        </dl>
+        <dl>
+            <dt>测试输出</dt>
+            <dd>0.416667</dd>
+        </dl>
+    </section>
+    <section>
+        <h2 id="ninth">9.求转置矩阵</h2>
+        <dl>
+            <dt>描述</dt>
+            <dd>求一个三行三列的转置矩阵</dd>
+        </dl>
+        <dl>
+            <dt>输入</dt>
+            <dd>第一行一个整数n<20，表示有n组测试数据，下面是n组数据;
+                每组测试数据是九个整型数（每个数都不大于10000），分别为矩阵的的每项
+            </dd>
+        </dl>
+        <dl>
+            <dt>输出</dt>
+            <dd>每组测试数据的转置矩阵</dd>
+        </dl>
+        <dl>
+            <dt>测试输入</dt>
+            <dd>
+            <pre>
+<code>
+    2
+    1 2 3 4 5 6 7 8 9
+    2 3 4 5 6 7 8 9 1
+</code>
+            </pre>
+            </dd>
+        </dl>
+        <dl>
+            <dt>测试输出</dt>
+            <dd>
+            <pre>
+<code>
+    1 4 7
+    2 5 8
+    3 6 9
+
+    2 5 8
+    3 6 9
+    4 7 1
+</code>
+            </pre>
+            </dd>
+        </dl>
+    </section>
+    <section>
+        <h2 id="tenth">10.括号匹配</h2>
+        <dl>
+            <dt>描述</dt>
+            <dd>给定一个字符串，里面只包含"(",")","[","]"四种符号，请问需要至少添加多少个括号才能使这些括号匹配起来。
+                如：
+                []是匹配的
+                ([])[]是匹配的
+                ((]是不匹配的
+                ([)]是不匹配的
+            </dd>
+        </dl>
+        <dl>
+            <dt>输入</dt>
+            <dd>第一行输入一个正整数N，表示测试数据组数(N<=10)
+                每组测试数据都只有一行，是一个字符串S，S中只包含以上所说的四种字符，S的长度不超过100
+            </dd>
+        </dl>
+        <dl>
+            <dt>输出</dt>
+            <dd>对于每组测试数据都输出一个正整数，表示最少需要添加的括号的数量。每组测试输出占一行</dd>
+        </dl>
+        <dl>
+            <dt>测试输入</dt>
+            <dd>
+            <pre>
+<code>
+    4
+    []
+    ([])[]
+    ((]
+    ([)]
+</code>
+            </pre>
+            </dd>
+        </dl>
+        <dl>
+            <dt>测试输出</dt>
+            <dd>
+                        <pre>
+<code>
+    0
+    0
+    3
+    2
+</code>
+            </pre>
+            </dd>
+        </dl>
+    </section>
+</div>
+</body>
+</html>
